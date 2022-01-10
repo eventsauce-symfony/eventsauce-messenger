@@ -25,9 +25,7 @@ final class MessengerMessageEventWithHeadersDispatcherTest extends TestCase
         $headers = ['_foo' => 'foo'];
         $testEnvelope = Envelope::wrap($event, [new HeadersStamp(Headers::create($headers))]);
 
-        $eventBusMock = $this->createConfiguredMock(MessageBusInterface::class, [
-            'dispatch' => $testEnvelope,
-        ]);
+        $eventBusMock = $this->createMock(MessageBusInterface::class);
         $eventBusMock
             ->expects($this->once())
             ->method('dispatch')

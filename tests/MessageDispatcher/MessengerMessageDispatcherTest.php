@@ -22,9 +22,7 @@ final class MessengerMessageDispatcherTest extends TestCase
         $testMessage = new Message(new stdClass());
         $testEnvelope = Envelope::wrap($testMessage);
 
-        $eventBusMock = $this->createConfiguredMock(MessageBusInterface::class, [
-            'dispatch' => $testEnvelope,
-        ]);
+        $eventBusMock = $this->createMock(MessageBusInterface::class);
         $eventBusMock
             ->expects($this->once())
             ->method('dispatch')
