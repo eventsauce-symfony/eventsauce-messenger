@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace DependencyInjection;
 
 use Andreo\EventSauce\Messenger\DependencyInjection\HandleMessageWithHeadersPass;
@@ -35,7 +34,7 @@ final class HandleMessageWithHeadersPassTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new ContainerBuilder();
-        $this->container->register( $this->busId, MessageBus::class);
+        $this->container->register($this->busId, MessageBus::class);
         $this->container->register(FakeHandler::class, FakeHandler::class)
             ->addTag('andreo.event_sauce.messenger_dispatcher_with_headers', [
                 'bus' => $this->busId,

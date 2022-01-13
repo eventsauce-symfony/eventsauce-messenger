@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Andreo\EventSauce\Messenger\DependencyInjection;
 
 use Andreo\EventSauce\Messenger\Middleware\HandleMessageWithHeadersMiddleware;

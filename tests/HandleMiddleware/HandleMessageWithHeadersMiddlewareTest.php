@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Tests\HandleMiddleware;
 
 use Andreo\EventSauce\Messenger\Headers;

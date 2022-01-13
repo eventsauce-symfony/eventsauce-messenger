@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace EventDispatcher;
 
 use Andreo\EventSauce\Messenger\MessengerMessageEventDispatcher;

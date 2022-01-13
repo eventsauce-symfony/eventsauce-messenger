@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Andreo\EventSauce\Messenger;
 
 use EventSauce\EventSourcing\AggregateRootId;
@@ -13,14 +12,16 @@ final class Headers
     /**
      * @param array<string, int|string|array<mixed>|AggregateRootId|bool|float> $headers
      */
-    private function __construct(private array $headers) {}
+    private function __construct(private array $headers)
+    {
+    }
 
     public function aggregateVersion(): int
     {
         /** @var int|string $version */
         $version = $this->headers[Header::AGGREGATE_ROOT_VERSION];
 
-        return (int)$version;
+        return (int) $version;
     }
 
     public function aggregateRootId(): AggregateRootId
@@ -45,7 +46,7 @@ final class Headers
     }
 
     /**
-     * @return int|string|array<mixed>|AggregateRootId|null|bool|float
+     * @return int|string|array<mixed>|AggregateRootId|bool|float|null
      */
     public function header(string $key): int|string|array|AggregateRootId|null|bool|float
     {

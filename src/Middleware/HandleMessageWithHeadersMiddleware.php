@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Andreo\EventSauce\Messenger\Middleware;
 
 use Andreo\EventSauce\Messenger\Stamp\HeadersStamp;
@@ -25,8 +24,7 @@ final class HandleMessageWithHeadersMiddleware implements MiddlewareInterface
     public function __construct(
         private HandlersLocatorInterface $handlersLocator,
         private bool $allowNoHandlers = true
-    )
-    {
+    ) {
         $this->logger = new NullLogger();
     }
 
