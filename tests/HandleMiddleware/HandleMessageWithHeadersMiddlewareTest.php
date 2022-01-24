@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\HandleMiddleware;
 
 use Andreo\EventSauce\Messenger\Headers;
-use Andreo\EventSauce\Messenger\Middleware\HandleMessageWithHeadersMiddleware;
+use Andreo\EventSauce\Messenger\Middleware\HandleEventWithHeadersMiddleware;
 use Andreo\EventSauce\Messenger\Stamp\HeadersStamp;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -24,7 +24,7 @@ final class HandleMessageWithHeadersMiddlewareTest extends TestCase
 
         $handler = $this->createPartialMock(FakeHandler::class, ['__invoke']);
 
-        $middleware = new HandleMessageWithHeadersMiddleware(
+        $middleware = new HandleEventWithHeadersMiddleware(
             new HandlersLocator([
                 $message::class => [$handler],
             ])

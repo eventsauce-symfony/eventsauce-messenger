@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\EventAndHeadersDispatcher;
+namespace Tests\EventWithHeadersDispatcher;
 
 use Andreo\EventSauce\Messenger\Headers;
-use Andreo\EventSauce\Messenger\MessengerMessageEventAndHeadersDispatcher;
+use Andreo\EventSauce\Messenger\MessengerEventWithHeadersDispatcher;
 use Andreo\EventSauce\Messenger\Stamp\HeadersStamp;
 use EventSauce\EventSourcing\Message;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class MessengerMessageEventAndHeadersDispatcherTest extends TestCase
+final class EventWithHeadersDispatcherTest extends TestCase
 {
     /**
      * @test
@@ -34,7 +34,7 @@ final class MessengerMessageEventAndHeadersDispatcherTest extends TestCase
             ->willReturn($testEnvelope)
         ;
 
-        $dispatcher = new MessengerMessageEventAndHeadersDispatcher($eventBusMock);
+        $dispatcher = new MessengerEventWithHeadersDispatcher($eventBusMock);
         $dispatcher->dispatch(new Message($event, $headers));
     }
 }

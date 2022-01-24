@@ -10,7 +10,7 @@ use EventSauce\EventSourcing\MessageDispatcher;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class MessengerMessageEventAndHeadersDispatcher implements MessageDispatcher
+final class MessengerEventWithHeadersDispatcher implements MessageDispatcher
 {
     public function __construct(private MessageBusInterface $eventBus)
     {

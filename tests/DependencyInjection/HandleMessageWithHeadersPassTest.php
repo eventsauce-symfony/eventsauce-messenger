@@ -27,7 +27,7 @@ final class HandleMessageWithHeadersPassTest extends TestCase
         $compiler = new HandleMessageWithHeadersPass();
         $compiler->process($this->container);
 
-        $has = $this->container->has("{$this->busId}.middleware.handle_message_with_headers");
+        $has = $this->container->has("{$this->busId}.middleware.handle_event_with_headers");
         $this->assertTrue($has);
     }
 
@@ -36,7 +36,7 @@ final class HandleMessageWithHeadersPassTest extends TestCase
         $this->container = new ContainerBuilder();
         $this->container->register($this->busId, MessageBus::class);
         $this->container->register(FakeHandler::class, FakeHandler::class)
-            ->addTag('andreo.event_sauce.messenger_dispatcher_with_headers', [
+            ->addTag('andreo.event_sauce.event_with_headers_dispatcher', [
                 'bus' => $this->busId,
             ]);
 
