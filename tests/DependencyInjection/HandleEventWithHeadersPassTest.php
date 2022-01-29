@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DependencyInjection;
 
-use Andreo\EventSauce\Messenger\DependencyInjection\HandleMessageWithHeadersPass;
+use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventWithHeadersPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Tests\DependencyInjection\FakeHandler;
 
-final class HandleMessageWithHeadersPassTest extends TestCase
+final class HandleEventWithHeadersPassTest extends TestCase
 {
     private ContainerBuilder $container;
 
@@ -24,7 +24,7 @@ final class HandleMessageWithHeadersPassTest extends TestCase
      */
     public function handle_message_middleware_decorated(): void
     {
-        $compiler = new HandleMessageWithHeadersPass();
+        $compiler = new HandleEventWithHeadersPass();
         $compiler->process($this->container);
 
         $has = $this->container->has("{$this->busId}.middleware.handle_event_with_headers");
