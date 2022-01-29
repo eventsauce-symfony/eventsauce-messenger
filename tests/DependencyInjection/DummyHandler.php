@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\DependencyInjection;
 
-class FakeHandler
+class DummyHandler
 {
     public function __invoke(): void
     {
