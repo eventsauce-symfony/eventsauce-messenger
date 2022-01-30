@@ -28,9 +28,7 @@ final class EventWithHeadersDispatcherTest extends TestCase
         $eventBusMock
             ->expects($this->once())
             ->method('dispatch')
-            ->with(
-                $this->isInstanceOf(Envelope::class),
-            )
+            ->with($testEnvelope)
             ->willReturn($testEnvelope)
         ;
 
