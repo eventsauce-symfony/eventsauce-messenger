@@ -12,12 +12,12 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\Middleware\StackMiddleware;
 
-final class HandleMessageWithHeadersMiddlewareTest extends TestCase
+final class HandleEventWithHeadersMiddlewareTest extends TestCase
 {
     /**
      * @test
      */
-    public function handled(): void
+    public function event_with_headers_handling(): void
     {
         $message = new DummyMessage();
         $headers = Headers::create(['_foo' => 'foo']);
