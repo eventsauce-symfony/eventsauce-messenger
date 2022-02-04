@@ -17,7 +17,7 @@ final class HandleEventWithHeadersMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function event_with_headers_handling(): void
+    public function should_handle_event_with_headers(): void
     {
         $message = new DummyMessage();
         $headers = Headers::create(['_foo' => 'foo']);

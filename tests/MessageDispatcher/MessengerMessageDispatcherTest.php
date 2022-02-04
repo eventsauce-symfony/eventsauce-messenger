@@ -16,7 +16,7 @@ final class MessengerMessageDispatcherTest extends TestCase
     /**
      * @test
      */
-    public function message_dispatched(): void
+    public function should_dispatch_message(): void
     {
         $testMessage = new Message(new stdClass());
         $testEnvelope = Envelope::wrap($testMessage);

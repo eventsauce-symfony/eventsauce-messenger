@@ -18,7 +18,7 @@ final class EventWithHeadersDispatcherTest extends TestCase
     /**
      * @test
      */
-    public function message_dispatched(): void
+    public function should_dispatch_event_with_headers(): void
     {
         $event = new stdClass();
         $headers = ['_foo' => 'foo'];

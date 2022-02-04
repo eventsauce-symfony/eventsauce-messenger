@@ -22,13 +22,15 @@ final class HandleEventWithHeadersPassTest extends TestCase
     /**
      * @test
      */
-    public function handle_message_middleware_decorated(): void
+    public function should_register_handle_event_with_headers_middleware_as_decorator(): void
     {
         $compiler = new HandleEventWithHeadersPass();
         $compiler->process($this->container);
 
         $has = $this->container->has("{$this->busId}.middleware.handle_event_with_headers");
         $this->assertTrue($has);
+        $definition = $this->container->getDefinition("{$this->busId}.middleware.handle_event_with_headers");
+        $this->assertContains("{$this->busId}.middleware.handle_message", $definition->getDecoratedService());
     }
 
     protected function setUp(): void

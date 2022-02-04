@@ -11,12 +11,12 @@ use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class MessengerMessageEventDispatcherTest extends TestCase
+final class MessengerEventDispatcherTest extends TestCase
 {
     /**
      * @test
      */
-    public function message_dispatched(): void
+    public function should_dispatch_only_event(): void
     {
         $event = new stdClass();
         $testEnvelope = Envelope::wrap($event);
