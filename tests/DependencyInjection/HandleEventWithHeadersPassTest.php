@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
-use Tests\DependencyInjection\DummyHandler;
+use Tests\DependencyInjection\DummyMessageDispatcher;
 
 final class HandleEventWithHeadersPassTest extends TestCase
 {
@@ -37,7 +37,7 @@ final class HandleEventWithHeadersPassTest extends TestCase
     {
         $this->container = new ContainerBuilder();
         $this->container->register($this->busId, MessageBus::class);
-        $this->container->register(DummyHandler::class, DummyHandler::class)
+        $this->container->register(DummyMessageDispatcher::class, DummyMessageDispatcher::class)
             ->addTag('andreo.event_sauce.event_with_headers_dispatcher', [
                 'bus' => $this->busId,
             ]);
