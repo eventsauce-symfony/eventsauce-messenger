@@ -18,7 +18,7 @@ composer require andreo/eventsauce-messenger
 This dispatcher dispatch event only to handler that supports event type.
 Doesn't dispatch headers
 
-Usage
+**Usage**
 
 ```php
 use Andreo\EventSauce\Messenger\MessengerEventDispatcher;
@@ -28,7 +28,7 @@ new MessengerEventDispatcher(
 );
 ```
 
-Handler example
+**Handler example**
 
 ```php
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -54,7 +54,7 @@ final class FooProjectionHandler implements MessageSubscriberInterface
 This dispatcher dispatch event only to handler that supports event type.
 Receive of headers in the second handler argument
 
-#### Usage
+**Usage**
 
 ```php
 use Andreo\EventSauce\Messenger\MessengerEventAndHeadersDispatcher;
@@ -64,7 +64,7 @@ new MessengerEventAndHeadersDispatcher(
 );
 ```
 
-Handler example
+**Handler example**
 
 ```php
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -86,7 +86,7 @@ final class FooProjectionHandler implements MessageSubscriberInterface
 This dispatcher dispatch message to any handler that supports message type.
 Message object includes the event and headers
 
-#### Usage
+**Usage**
 
 ```php
 use Andreo\EventSauce\Messenger\MessengerEventDispatcher;
@@ -96,7 +96,7 @@ new MessengerEventDispatcher(
 );
 ```
 
-Handler example
+**Handler example**
 
 ```php
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -118,7 +118,7 @@ final class FooProjectionHandler implements MessageSubscriberInterface
 
 ### Dependency Injection
 
-If you want use **MessengerEventWithHeadersDispatcher**
+If you want use **MessengerEventAndHeadersDispatcher**
 you need to mark your event dispatcher with a dedicated tag
 
 For example:
