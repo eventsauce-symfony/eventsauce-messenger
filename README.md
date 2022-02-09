@@ -138,10 +138,7 @@ and add dedicated compiler pass to your app kernel
 // src/Kernel.php
 namespace App;
 
-use App\DependencyInjection\Compiler\CustomPass;
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+// ...
 use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventAndHeadersPass;
 
 class Kernel extends BaseKernel
