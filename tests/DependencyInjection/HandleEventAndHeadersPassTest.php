@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DependencyInjection;
 
-use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventWithHeadersPass;
+use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventAndHeadersPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Tests\DependencyInjection\DummyMessageDispatcher;
 
-final class HandleEventWithHeadersPassTest extends TestCase
+final class HandleEventAndHeadersPassTest extends TestCase
 {
     private ContainerBuilder $container;
 
@@ -22,14 +22,14 @@ final class HandleEventWithHeadersPassTest extends TestCase
     /**
      * @test
      */
-    public function should_register_handle_event_with_headers_middleware_as_decorator(): void
+    public function should_register_handle_event_and_headers_middleware_as_decorator(): void
     {
-        $compiler = new HandleEventWithHeadersPass();
+        $compiler = new HandleEventAndHeadersPass();
         $compiler->process($this->container);
 
-        $has = $this->container->has("{$this->busId}.middleware.handle_event_with_headers");
+        $has = $this->container->has("{$this->busId}.middleware.handle_event_and_headers");
         $this->assertTrue($has);
-        $definition = $this->container->getDefinition("{$this->busId}.middleware.handle_event_with_headers");
+        $definition = $this->container->getDefinition("{$this->busId}.middleware.handle_event_and_headers");
         $this->assertContains("{$this->busId}.middleware.handle_message", $definition->getDecoratedService());
     }
 
@@ -38,7 +38,7 @@ final class HandleEventWithHeadersPassTest extends TestCase
         $this->container = new ContainerBuilder();
         $this->container->register($this->busId, MessageBus::class);
         $this->container->register(DummyMessageDispatcher::class, DummyMessageDispatcher::class)
-            ->addTag('andreo.event_sauce.event_with_headers_dispatcher', [
+            ->addTag('andreo.event_sauce.event_and_headers_dispatcher', [
                 'bus' => $this->busId,
             ]);
 

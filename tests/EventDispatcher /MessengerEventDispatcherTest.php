@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EventDispatcher;
 
-use Andreo\EventSauce\Messenger\MessengerMessageEventDispatcher;
+use Andreo\EventSauce\Messenger\MessengerEventDispatcher;
 use EventSauce\EventSourcing\Message;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -29,7 +29,7 @@ final class MessengerEventDispatcherTest extends TestCase
             ->willReturn($testEnvelope)
         ;
 
-        $dispatcher = new MessengerMessageEventDispatcher($eventBusMock);
+        $dispatcher = new MessengerEventDispatcher($eventBusMock);
         $dispatcher->dispatch(new Message($event));
     }
 }

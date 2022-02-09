@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\EventWithHeadersDispatcher;
+namespace Tests\EventAndHeadersDispatcher;
 
 use Andreo\EventSauce\Messenger\Headers;
-use Andreo\EventSauce\Messenger\MessengerEventWithHeadersDispatcher;
+use Andreo\EventSauce\Messenger\MessengerEventAndHeadersDispatcher;
 use Andreo\EventSauce\Messenger\Stamp\HeadersStamp;
 use EventSauce\EventSourcing\Message;
 use PHPUnit\Framework\TestCase;
@@ -13,12 +13,12 @@ use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class EventWithHeadersDispatcherTest extends TestCase
+final class EventAndHeadersDispatcherTest extends TestCase
 {
     /**
      * @test
      */
-    public function should_dispatch_event_with_headers(): void
+    public function should_dispatch_event_and_headers(): void
     {
         $event = new stdClass();
         $headers = ['_foo' => 'foo'];
@@ -32,7 +32,7 @@ final class EventWithHeadersDispatcherTest extends TestCase
             ->willReturn($testEnvelope)
         ;
 
-        $dispatcher = new MessengerEventWithHeadersDispatcher($eventBusMock);
+        $dispatcher = new MessengerEventAndHeadersDispatcher($eventBusMock);
         $dispatcher->dispatch(new Message($event, $headers));
     }
 }

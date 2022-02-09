@@ -17,7 +17,7 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Throwable;
 
-final class HandleEventWithHeadersMiddleware implements MiddlewareInterface
+final class HandleEventAndHeadersMiddleware implements MiddlewareInterface
 {
     use LoggerAwareTrait;
 
