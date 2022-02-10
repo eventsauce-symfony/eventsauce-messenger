@@ -110,6 +110,8 @@ final class FooProjectionHandler implements MessageSubscriberInterface
         if (!$message->event() instanceof FooCreated) {
             return;
         }
+        
+        // do something
     }
 
     // ...
