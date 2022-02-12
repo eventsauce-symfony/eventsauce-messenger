@@ -1,6 +1,6 @@
 {
     "name": "andreo/eventsauce-messenger",
-    "description": "Integration symfony messenger with the EventSauce.",
+    "description": "Integration symfony messenger for EventSauce.",
     "keywords": [
         "eventsauce",
         "components",
