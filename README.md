@@ -33,16 +33,16 @@ new MessengerEventDispatcher(
 ```php
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
-final class FooProjectionHandler implements MessageSubscriberInterface
+final class SomeProjectionHandler implements MessageSubscriberInterface
 {
-    public function onCreated(FooCreated $event)
+    public function onCreated(SomethingCreated $event)
     {
         // do something
     }
 
     public static function getHandledMessages(): iterable
     {
-        yield FooCreated::class => [
+        yield SomethingCreated::class => [
             'method' => 'onCreated',
         ];
     }
@@ -70,9 +70,9 @@ new MessengerEventAndHeadersDispatcher(
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Andreo\EventSauce\Messenger\Headers;
 
-final class FooProjectionHandler implements MessageSubscriberInterface
+final class SomeProjectionHandler implements MessageSubscriberInterface
 {
-    public function onCreated(FooCreated $event, Headers $headers)
+    public function onCreated(SomethingCreated $event, Headers $headers)
     {
         // do something
     }
@@ -103,11 +103,11 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Andreo\EventSauce\Messenger\Headers;
 use EventSauce\EventSourcing\Message;
 
-final class FooProjectionHandler implements MessageSubscriberInterface
+final class SomeProjectionHandler implements MessageSubscriberInterface
 {
     public function onCreated(Message $message)
     {
-        if (!$message->event() instanceof FooCreated) {
+        if (!$message->event() instanceof SomethingCreated) {
             return;
         }
         
