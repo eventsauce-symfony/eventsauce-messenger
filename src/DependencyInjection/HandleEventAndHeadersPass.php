@@ -24,13 +24,16 @@ final class HandleEventAndHeadersPass implements CompilerPassInterface
                 continue;
             }
 
-            $defaultHandleMessageMiddlewareDef = $container->getDefinition($defaultHandleMessageMiddlewareId);
-            $container
+            $originHandleMessageMiddlewareDef = $container->getDefinition($defaultHandleMessageMiddlewareId);
+            $handleMessageMiddlewareDef = $container
                 ->register("$busId.middleware.handle_event_and_headers", HandleEventAndHeadersMiddleware::class)
-                ->addArgument($defaultHandleMessageMiddlewareDef->getArgument(0))
+                ->addArgument($originHandleMessageMiddlewareDef->getArgument(0))
                 ->setDecoratedService($defaultHandleMessageMiddlewareId)
-                ->addMethodCall('setLogger', [new Reference('monolog.logger.messenger')])
             ;
+            if ($container->has('monolog.logger.messenger')) {
+                $handleMessageMiddlewareDef
+                    ->addMethodCall('setLogger', [new Reference('monolog.logger.messenger')]);
+            }
         }
     }
 }
