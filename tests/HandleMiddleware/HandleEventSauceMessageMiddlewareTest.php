@@ -19,14 +19,14 @@ final class HandleEventSauceMessageMiddlewareTest extends TestCase
      */
     public function should_handle_eventsauce_message(): void
     {
-        $message = new DummyMessage();
+        $event = new DummyEvent();
         $headers = ['_foo' => 'foo'];
 
         $handler = $this->createPartialMock(FakeHandler::class, ['__invoke']);
 
         $middleware = new HandleEventSauceMessageMiddleware(
             new HandlersLocator([
-                $message::class => [$handler],
+                $event::class => [$handler],
             ])
         );
 
@@ -34,10 +34,10 @@ final class HandleEventSauceMessageMiddlewareTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(static fn ($subject) => $subject instanceof Message && $subject->event() === $message)
+                $this->callback(static fn ($subject) => $subject instanceof Message && $subject->event() === $event)
             );
 
-        $envelope = Envelope::wrap($message, [new MessageStamp($headers)]);
+        $envelope = Envelope::wrap($event, [new MessageStamp($headers)]);
         $middleware->handle($envelope, new StackMiddleware());
     }
 }
