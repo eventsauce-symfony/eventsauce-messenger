@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace DependencyInjection;
 
-use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventAndHeadersPass;
+use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventSauceMessageMiddlewarePass;
+use Andreo\EventSauce\Messenger\Middleware\HandleEventSauceMessageMiddleware;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -13,24 +14,24 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Tests\DependencyInjection\DummyMessageDispatcher;
 
-final class HandleEventAndHeadersPassTest extends TestCase
+final class HandleEventSauceMessageMiddlewarePassTest extends TestCase
 {
     private ContainerBuilder $container;
 
-    private string $busId = 'foo_bus';
+    private string $busId = 'fooBus';
 
     /**
      * @test
      */
-    public function should_register_handle_event_and_headers_middleware_as_decorator(): void
+    public function should_register_eventsauce_handle_message_middleware(): void
     {
-        $compiler = new HandleEventAndHeadersPass();
+        $compiler = new HandleEventSauceMessageMiddlewarePass();
         $compiler->process($this->container);
 
-        $has = $this->container->has("{$this->busId}.middleware.handle_event_and_headers");
+        $has = $this->container->has("{$this->busId}.middleware.handle_message");
         $this->assertTrue($has);
-        $definition = $this->container->getDefinition("{$this->busId}.middleware.handle_event_and_headers");
-        $this->assertContains("{$this->busId}.middleware.handle_message", $definition->getDecoratedService());
+        $definition = $this->container->getDefinition("{$this->busId}.middleware.handle_message");
+        $this->assertEquals(HandleEventSauceMessageMiddleware::class, $definition->getClass());
     }
 
     protected function setUp(): void
@@ -38,7 +39,7 @@ final class HandleEventAndHeadersPassTest extends TestCase
         $this->container = new ContainerBuilder();
         $this->container->register($this->busId, MessageBus::class);
         $this->container->register(DummyMessageDispatcher::class, DummyMessageDispatcher::class)
-            ->addTag('andreo.event_sauce.event_and_headers_dispatcher', [
+            ->addTag('andreo.eventsauce.messenger.message_dispatcher', [
                 'bus' => $this->busId,
             ]);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\MessageDispatcher;
 
 use Andreo\EventSauce\Messenger\MessengerMessageDispatcher;
+use Andreo\EventSauce\Messenger\Stamp\MessageStamp;
 use EventSauce\EventSourcing\Message;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -16,20 +17,21 @@ final class MessengerMessageDispatcherTest extends TestCase
     /**
      * @test
      */
-    public function should_dispatch_message(): void
+    public function should_dispatch_event_and_headers(): void
     {
-        $testMessage = new Message(new stdClass());
-        $testEnvelope = Envelope::wrap($testMessage);
+        $event = new stdClass();
+        $headers = ['_foo' => 'foo'];
+        $envelope = Envelope::wrap($event, [new MessageStamp($headers)]);
 
         $eventBusMock = $this->createMock(MessageBusInterface::class);
         $eventBusMock
             ->expects($this->once())
             ->method('dispatch')
-            ->with($testMessage)
-            ->willReturn($testEnvelope)
+            ->with($envelope)
+            ->willReturn($envelope)
         ;
 
         $dispatcher = new MessengerMessageDispatcher($eventBusMock);
-        $dispatcher->dispatch($testMessage);
+        $dispatcher->dispatch(new Message($event, $headers));
     }
 }

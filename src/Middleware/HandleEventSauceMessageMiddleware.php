@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Andreo\EventSauce\Messenger\Middleware;
 
-use Andreo\EventSauce\Messenger\Stamp\HeadersStamp;
+use Andreo\EventSauce\Messenger\Stamp\MessageStamp;
+use EventSauce\EventSourcing\Message;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Envelope;
@@ -17,14 +18,18 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Throwable;
 
-final class HandleEventAndHeadersMiddleware implements MiddlewareInterface
+final class HandleEventSauceMessageMiddleware implements MiddlewareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(
-        private HandlersLocatorInterface $handlersLocator,
-        private bool $allowNoHandlers = true
-    ) {
+    private HandlersLocatorInterface $handlersLocator;
+
+    private bool $allowNoHandlers;
+
+    public function __construct(HandlersLocatorInterface $handlersLocator, bool $allowNoHandlers = false)
+    {
+        $this->handlersLocator = $handlersLocator;
+        $this->allowNoHandlers = $allowNoHandlers;
         $this->logger = new NullLogger();
     }
 
@@ -32,12 +37,11 @@ final class HandleEventAndHeadersMiddleware implements MiddlewareInterface
     {
         $handler = null;
         $message = $envelope->getMessage();
-
         assert(null !== $this->logger);
 
         $context = [
             'message' => $message,
-            'class' => $message::class,
+            'class' => \get_class($message),
         ];
 
         $exceptions = [];
@@ -48,14 +52,16 @@ final class HandleEventAndHeadersMiddleware implements MiddlewareInterface
 
             try {
                 $handler = $handlerDescriptor->getHandler();
-                /** @var HeadersStamp[] $headerStamps */
-                $headerStamps = $envelope->all(HeadersStamp::class);
-                $headerStamp = current($headerStamps);
-                if ($headerStamp) {
-                    $result = $handler($message, $headerStamp->getHeaders());
+
+                /** @var MessageStamp[] $messageStamps */
+                $messageStamps = $envelope->all(MessageStamp::class);
+                $messageStamp = current($messageStamps);
+                if ($messageStamp) {
+                    $result = $handler(new Message($message, $messageStamp->headers));
                 } else {
                     $result = $handler($message);
                 }
+
                 $handledStamp = HandledStamp::fromDescriptor($handlerDescriptor, $result);
                 $envelope = $envelope->with($handledStamp);
                 $this->logger->info('Message {class} handled by {handler}', $context + ['handler' => $handledStamp->getHandlerName()]);
