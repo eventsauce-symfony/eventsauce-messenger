@@ -7,6 +7,7 @@ namespace Andreo\EventSauce\Messenger\DependencyInjection;
 use Andreo\EventSauce\Messenger\Middleware\HandleEventSauceMessageMiddleware;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class HandleEventSauceMessageMiddlewarePass implements CompilerPassInterface
@@ -28,6 +29,10 @@ final class HandleEventSauceMessageMiddlewarePass implements CompilerPassInterfa
                 ->register($handleMessageMiddlewareId, HandleEventSauceMessageMiddleware::class)
                 ->addArgument($defaultHandleMessageMiddlewareDef->getArgument(0))
             ;
+            try {
+                $handleMessageMiddlewareDef->addArgument($defaultHandleMessageMiddlewareDef->getArgument(1));
+            } catch (OutOfBoundsException) {
+            }
 
             if ($container->has($loggerId = 'monolog.logger.messenger')) {
                 $handleMessageMiddlewareDef->addMethodCall('setLogger', [new Reference($loggerId)]);

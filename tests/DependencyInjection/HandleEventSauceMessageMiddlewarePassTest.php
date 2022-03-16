@@ -45,6 +45,8 @@ final class HandleEventSauceMessageMiddlewarePassTest extends TestCase
 
         $this->container
             ->register("{$this->busId}.middleware.handle_message", HandleMessageMiddleware::class)
-            ->addArgument(new Definition(HandlersLocator::class));
+            ->addArgument(new Definition(HandlersLocator::class))
+            ->addArgument(true)
+        ;
     }
 }
