@@ -1,0 +1,4 @@
+hb_swagger_ui:
+    directory: "%kernel.project_dir%/docs/"
+    files:
+        - "api.yaml"
