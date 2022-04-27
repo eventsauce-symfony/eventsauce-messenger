@@ -26,7 +26,7 @@ final class HandleEventSauceMessageMiddleware implements MiddlewareInterface
 
     private bool $allowNoHandlers;
 
-    public function __construct(HandlersLocatorInterface $handlersLocator, bool $allowNoHandlers = false)
+    public function __construct(HandlersLocatorInterface $handlersLocator, bool $allowNoHandlers = true)
     {
         $this->handlersLocator = $handlersLocator;
         $this->allowNoHandlers = $allowNoHandlers;
