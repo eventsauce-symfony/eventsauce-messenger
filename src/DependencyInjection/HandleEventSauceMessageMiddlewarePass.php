@@ -12,8 +12,16 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class HandleEventSauceMessageMiddlewarePass implements CompilerPassInterface
 {
+    public function __construct(private ?string $enablingParameter = null)
+    {
+    }
+
     public function process(ContainerBuilder $container): void
     {
+        if ($this->enablingParameter && (!$container->hasParameter($this->enablingParameter) || !$container->getParameter($this->enablingParameter))) {
+            return;
+        }
+
         foreach ($container->findTaggedServiceIds('andreo.eventsauce.messenger.message_dispatcher') as [$attrs]) {
             $busId = $attrs['bus'];
             if (!$container->has($busId)) {

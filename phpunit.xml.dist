@@ -2,7 +2,7 @@
     <testsuites>
         <testsuite name="messenger">
             <directory>tests</directory>
-            <exclude>tests/Application/</exclude>
+            <exclude>tests/App/</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
