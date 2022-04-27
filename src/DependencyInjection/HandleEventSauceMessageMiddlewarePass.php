@@ -35,7 +35,7 @@ final class HandleEventSauceMessageMiddlewarePass implements CompilerPassInterfa
             $defaultHandleMessageMiddlewareDef = $container->getDefinition($handleMessageMiddlewareId);
             $handleMessageMiddlewareDef = $container
                 ->register($handleMessageMiddlewareId, HandleEventSauceMessageMiddleware::class)
-                ->addArgument($defaultHandleMessageMiddlewareDef->getArgument(0))
+                ->setArguments($defaultHandleMessageMiddlewareDef->getArguments())
             ;
             try {
                 $handleMessageMiddlewareDef->addArgument($defaultHandleMessageMiddlewareDef->getArgument(1));
