@@ -13,146 +13,92 @@ composer require andreo/eventsauce-messenger
 - PHP ^8.1
 - Symfony messenger ^6.0
 
-### Event dispatching
-
-This dispatcher dispatch event only to handler that supports event type.
-Doesn't dispatch headers
-
-**Usage**
+### Usage
 
 ```php
-use Andreo\EventSauce\Messenger\MessengerEventDispatcher;
+use Andreo\EventSauce\Messenger\MessengerMessageDispatcher;
 
-new MessengerEventDispatcher(
-    eventBus: $eventBus, // instance of Symfony\Component\Messenger\MessageBusInterface
+new MessengerMessageDispatcher(
+    eventBus: $eventBus // Symfony\Component\Messenger\MessageBusInterface
 );
 ```
 
-**Handler example**
+**Projection Example**
 
 ```php
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use EventSauce\EventSourcing\Message;
+use EventSauce\EventSourcing\MessageConsumer;
 
-final class SomeProjectionHandler implements MessageSubscriberInterface
+final class FooProjector implements MessageConsumer, MessageSubscriberInterface
 {
-    public function onCreated(SomethingCreated $event)
+    public function handle(Message $message)
     {
-        // do something
+       $event = $message->payload();
+        if ($event instanceof FooCreated) {
+            // do something
+        } 
     }
-
+    
     public static function getHandledMessages(): iterable
     {
-        yield SomethingCreated::class => [
-            'method' => 'onCreated',
+        yield FooCreated::class => [
+            'method' => 'handle',
+            'bus' => 'eventBus',
         ];
     }
 }
 ```
 
-### Event and headers dispatching
-
-This dispatcher dispatch event only to handler that supports event type.
-Receive of headers in the second handler argument
-
-**Usage**
+**Handler Example**
 
 ```php
-use Andreo\EventSauce\Messenger\MessengerEventAndHeadersDispatcher;
-
-new MessengerEventAndHeadersDispatcher(
-    eventBus: $eventBus
-);
-```
-
-**Handler example**
-
-```php
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
-use Andreo\EventSauce\Messenger\Headers;
-
-final class SomeProjectionHandler implements MessageSubscriberInterface
-{
-    public function onCreated(SomethingCreated $event, Headers $headers)
-    {
-        // do something
-    }
-
-    // ...
-}
-```
-
-### Message dispatching
-
-This dispatcher dispatch message to any handler that supports message type.
-Message object includes the event and headers
-
-**Usage**
-
-```php
-use Andreo\EventSauce\Messenger\MessengerEventDispatcher;
-
-new MessengerEventDispatcher(
-    eventBus: $eventBus
-);
-```
-
-**Handler example**
-
-```php
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
-use Andreo\EventSauce\Messenger\Headers;
 use EventSauce\EventSourcing\Message;
+use EventSauce\EventSourcing\MessageConsumer;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SomeProjectionHandler implements MessageSubscriberInterface
+#[AsMessageHandler(
+    bus: 'eventBus',
+    handles: FooCreated::class,
+    method: 'handle'
+)]
+final class FooEventHandler implements MessageConsumer
 {
-    public function onCreated(Message $message)
+    public function handle(Message $message)
     {
-        if (!$message->event() instanceof SomethingCreated) {
-            return;
-        }
-        
-        // do something
+       $event = $message->payload();
+       assert($event instanceof FooCreated);
+       
+       // do something
     }
-
-    // ...
 }
 ```
 
-### Dependency Injection
-
-If you want use **MessengerEventAndHeadersDispatcher**
-you need to mark your event dispatcher with a dedicated tag
-
-For example:
+### Register
 
 ```yaml
-    Andreo\EventSauce\Messenger\MessengerEventAndHeadersDispatcher:
+    Andreo\EventSauce\Messenger\MessengerMessageDispatcher:
         arguments:
-            - '@messageBus'
+            - '@eventBus'
         tags:
-            - { name: andreo.event_sauce.event_and_headers_dispatcher, bus: messageBus }
+            - { name: andreo.eventsauce.messenger.message_dispatcher, bus: eventBus }
 ```
 
-and add dedicated compiler pass to your app kernel
+Add compiler pass to app kernel
 
 ```php
 
-// src/Kernel.php
 namespace App;
 
-// ...
-use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventAndHeadersPass;
+use Andreo\EventSauce\Messenger\DependencyInjection\HandleEventSauceMessageMiddlewarePass;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    // ...
-
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new HandleEventAndHeadersPass(), priority: -10);
+        $container->addCompilerPass(new HandleEventSauceMessageMiddlewarePass(), priority: -10);
     }
 }
-
 ```
