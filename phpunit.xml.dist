@@ -1,8 +1,8 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="messenger">
-            <directory>tests</directory>
-            <exclude>tests/App/</exclude>
+        <testsuite name="default">
+            <directory>Tests</directory>
+            <exclude>Tests/App/</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
