@@ -6,8 +6,8 @@ namespace App\Handler;
 
 use Andreo\EventSauce\Messenger\Attribute\AsEventSauceMessageHandler;
 use Andreo\EventSauce\Messenger\EventConsumer\InjectedHandleMethodInflector;
-use Andreo\EventSauce\Messenger\Tests\App\src\Event\BazCreated;
 use App\Entity\EventStore;
+use App\Event\BazCreated;
 use App\Repository\EventStoreRepository;
 use EventSauce\EventSourcing\EventConsumption\EventConsumer;
 use EventSauce\EventSourcing\EventConsumption\HandleMethodInflector;

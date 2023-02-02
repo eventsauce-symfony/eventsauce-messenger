@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Andreo\EventSauce\Messenger\Tests\App\src\Event;
+namespace App\Event;
 
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Andreo\EventSauce\Messenger\Tests\App\src\Event\BazCreated;
 use App\Event\BarCreated;
+use App\Event\BazCreated;
 use App\Event\DefaultCreated;
 use App\Event\FooCreated;
 use EventSauce\EventSourcing\Message;

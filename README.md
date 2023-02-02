@@ -133,3 +133,7 @@ framework:
           - 'Andreo\EventSauce\Messenger\Middleware\HandleEventSauceMessageMiddleware'
           - 'handle_message' # if you want to use default handling also, this middleware must be last set
 ```
+
+#### More details
+
+[Test App](https://github.com/eventsauce-symfony/eventsauce-messenger/tree/main/Tests/App)
