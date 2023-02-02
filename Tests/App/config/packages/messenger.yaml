@@ -13,6 +13,9 @@ framework:
             eventBus:
                 default_middleware: false
                 middleware:
+                    - 'add_bus_name_stamp_middleware': ['eventBus']
+                    - 'dispatch_after_current_bus'
+                    - 'failed_message_processing_middleware'
                     - 'send_message'
                     - 'handle_eventsauce_message'
                     - 'handle_message'
