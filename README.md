@@ -30,6 +30,7 @@ use Andreo\EventSauce\Messenger\EventConsumer\InjectedHandleMethodInflector;
 use EventSauce\EventSourcing\EventConsumption\EventConsumer;
 use EventSauce\EventSourcing\EventConsumption\HandleMethodInflector;
 use Andreo\EventSauce\Messenger\Attribute\AsEventSauceMessageHandler;
+use EventSauce\EventSourcing\Message;
 
 final class FooBarBazMessageHandler extends EventConsumer
 {
