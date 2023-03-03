@@ -8,6 +8,7 @@ use Andreo\EventSauce\Messenger\Attribute\AsEventSauceMessageHandler;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
+use Reflector;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -17,7 +18,9 @@ final readonly class RegisterEventSauceMessageHandlerAttribute
     {
         $container->registerAttributeForAutoconfiguration(
             AsEventSauceMessageHandler::class,
-            static function (ChildDefinition $definition, AsEventSauceMessageHandler $attribute, ReflectionMethod $reflector) use ($handleMethod): void {
+            static function (ChildDefinition $definition, AsEventSauceMessageHandler $attribute, Reflector $reflector) use ($handleMethod): void {
+                assert($reflector instanceof ReflectionMethod);
+
                 $eventParameter = $reflector->getParameters()[0] ?? null;
                 if (null === $eventParameter) {
                     return;
@@ -28,16 +31,25 @@ final readonly class RegisterEventSauceMessageHandlerAttribute
                 $tagAttributes['bus'] = $attribute->bus;
                 $tagAttributes['priority'] = $attribute->priority;
 
-                $eventParameterType = $eventParameter->getType();
-                $eventParameterTypesToRegister = [];
-                if ($eventParameterType instanceof ReflectionNamedType) {
-                    $eventParameterTypesToRegister = [$eventParameterType];
-                } elseif ($eventParameterType instanceof ReflectionUnionType) {
-                    $eventParameterTypesToRegister = $eventParameterType->getTypes();
+                $handles = is_string($attribute->handles) ? [$attribute->handles] : $attribute->handles;
+                assert(is_array($handles));
+
+                if (empty($handles)) {
+                    $eventParameterType = $eventParameter->getType();
+                    $eventParameterTypesToRegister = [];
+                    if ($eventParameterType instanceof ReflectionNamedType) {
+                        $eventParameterTypesToRegister = [$eventParameterType];
+                    } elseif ($eventParameterType instanceof ReflectionUnionType) {
+                        $eventParameterTypesToRegister = $eventParameterType->getTypes();
+                    }
+
+                    foreach ($eventParameterTypesToRegister as $eventParameterTypeToRegister) {
+                        $handles[] = $eventParameterTypeToRegister->getName();
+                    }
                 }
 
-                foreach ($eventParameterTypesToRegister as $eventParameterTypeToRegister) {
-                    $tagAttributes['handles'] = $eventParameterTypeToRegister->getName();
+                foreach ($handles as $handle) {
+                    $tagAttributes['handles'] = $handle;
                     $definition->addTag('messenger.message_handler', $tagAttributes);
                 }
             }

@@ -12,6 +12,7 @@ final class AsEventSauceMessageHandler
     public function __construct(
         public ?string $bus = null,
         public ?string $fromTransport = null,
+        public string|array $handles = [],
         public int $priority = 0,
     ) {
     }
